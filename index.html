@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
     <style>
       body {
         min-height: 100vh;
@@ -21,48 +18,90 @@
     <section class="section">
       <div class="tile is-ancestor">
         <div class="tile is-4 is-parent">
-          <div class="tile is-child box">
-            <p class="title">Three</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-              semper diam at erat pulvinar, at pulvinar felis blandit.
-              Vestibulum volutpat tellus diam, consequat gravida libero rhoncus
-              ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta
-              orci, quis semper odio felis ut quam.
-            </p>
-            <p>
-              Suspendisse varius ligula in molestie lacinia. Maecenas varius
-              eget ligula a sagittis. Pellentesque interdum, nisl nec interdum
-              maximus, augue diam porttitor lorem, et sollicitudin felis neque
-              sit amet erat. Maecenas imperdiet felis nisi, fringilla luctus
-              felis hendrerit sit amet. Aenean vitae gravida diam, finibus
-              dignissim turpis. Sed eget varius ligula, at volutpat tortor.
-            </p>
-            <p>
-              Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus
-              erat, vitae congue lectus dolor consequat libero. Donec leo
-              ligula, maximus et pellentesque sed, gravida a metus. Cras
-              ullamcorper a nunc ac porta. Aliquam ut aliquet lacus, quis
-              faucibus libero. Quisque non semper leo.
-            </p>
+          <div class="tile is-child box" id="input">
+            <p class="title">Input</p>
+
+            <div class="field">
+              <label class="label">Substance</label>
+              <div class="control">
+                <div class="select">
+                  <select>
+                    <option>Water</option>
+                    <option>Ammonia</option>
+                    <option>Carbon Dioxide</option>
+                    <option>R-410a</option>
+                    <option>R-134a</option>
+                    <option>Nitrogen</option>
+                    <option>Methane</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Name</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="number input" step="any" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox" checked />
+                  Show calculations
+                </label>
+              </div>
+            </div>
+
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-link">Calculate</button>
+              </div>
+              <div class="control">
+                <button class="button is-danger is-light">Clear Input</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="tile is-vertical is-parent">
-          <div class="tile is-child box">
-            <p class="title">One</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-              ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas
-              non massa sem. Etiam finibus odio quis feugiat facilisis.
-            </p>
+        <div class="tile is-8 is-vertical is-parent">
+          <div class="tile is-child box" id="result">
+            <p class="title">Result</p>
+            <div class="columns is-multiline">
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+              <div class="column is-full-mobile is-one-third-desktop">
+                <code>is-one-third-desktop is-half-tablet is-one-quarter-fullhd is-full-mobile</code>
+              </div>
+            </div>
           </div>
-          <div class="tile is-child box">
-            <p class="title">Two</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-              ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas
-              non massa sem. Etiam finibus odio quis feugiat facilisis.
-            </p>
+          <div class="tile is-child box" id="calculations">
+            <p class="title">Calculations</p>
+            <div class="content">
+              <pre>#Hello world</pre>
+            </div>
           </div>
         </div>
       </div>
