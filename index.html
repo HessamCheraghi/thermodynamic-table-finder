@@ -20,48 +20,79 @@
         <div class="tile is-4 is-parent">
           <div class="tile is-child box" id="input">
             <p class="title">Input</p>
-
-            <div class="field">
-              <label class="label">Substance</label>
-              <div class="control">
-                <div class="select">
-                  <select>
-                    <option>Water</option>
-                    <option>Ammonia</option>
-                    <option>Carbon Dioxide</option>
-                    <option>R-410a</option>
-                    <option>R-134a</option>
-                    <option>Nitrogen</option>
-                    <option>Methane</option>
-                  </select>
+            <form>
+              <div class="field">
+                <label class="label" for="substance">Substance</label>
+                <div class="control">
+                  <div class="select">
+                    <select id="substance">
+                      <option value="1">Water</option>
+                      <option value="2">Ammonia</option>
+                      <option value="3">Carbon Dioxide</option>
+                      <option value="4">R-410a</option>
+                      <option value="5">R-134a</option>
+                      <option value="6">Nitrogen</option>
+                      <option value="7">Methane</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="field">
-              <label class="label">Name</label>
-              <div class="control">
-                <input class="input" type="number" placeholder="number input" step="any" />
+              <div class="field">
+                <label class="label" for="temperature">T (°C)</label>
+                <div class="control">
+                  <input class="input" type="number" id="temperature" placeholder="Temperature" step="any" required />
+                </div>
               </div>
-            </div>
+              <div class="field">
+                <label class="label" for="pressure">P (kPa)</label>
+                <div class="control">
+                  <input class="input" type="number" id="pressure" placeholder="Pressure" step="any" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="specific-volume">ν (m<sup>3</sup>/kg)</label>
+                <div class="control">
+                  <input class="input" type="number" id="specific-volume" placeholder="Specific Volume" step="any" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="specific-enthalpy">h (kJ/kg)</label>
+                <div class="control">
+                  <input class="input" type="number" id="specific-enthalpy" placeholder="Specific Enthalpy" step="any" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="specific-entropy">s (kJ/kg/K)</label>
+                <div class="control">
+                  <input class="input" type="number" id="specific-entropy" placeholder="Specific Entropy" step="any" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="quality">x ( 0 ≤ x ≤ 1 )</label>
+                <div class="control">
+                  <input class="input" type="number" id="quality" placeholder="Quality" step="any" min="0" max="1" required />
+                </div>
+              </div>
 
-            <div class="field">
-              <div class="control">
-                <label class="checkbox">
-                  <input type="checkbox" checked />
-                  Show calculations
-                </label>
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input id="show-calculations" type="checkbox" checked />
+                    Show calculations
+                  </label>
+                </div>
               </div>
-            </div>
 
-            <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-link">Calculate</button>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button type="submit" class="button is-link">Calculate</button>
+                </div>
+                <div class="control">
+                  <button type="button" class="button is-danger is-light">Clear Input</button>
+                </div>
               </div>
-              <div class="control">
-                <button class="button is-danger is-light">Clear Input</button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
         <div class="tile is-8 is-vertical is-parent">
