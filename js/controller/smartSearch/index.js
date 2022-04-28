@@ -1,10 +1,18 @@
-import propertyIndex from "./propertyIndex.js";
+import propertyIndex from "../propertyIndex.js";
 import isInsideTable from "./isInsideTable.js";
 import findSurrounding from "./findSurrounding.js";
 
+/**
+ *
+ * searches dynamically based on property name and value
+ * @param {Array} table all thermodynamic tables
+ * @param {(string|number)} propertyName index of property. if a string was passed searches for index based on property name
+ * @param {number} propertyValue value to find
+ * @returns {{statusCode:string,statusMessage:string,result:undefined|[number]|[[number]]}} object containing result(s) and conclusion messages
+ */
 export default function (table, propertyName, propertyValue) {
   // finding the index of property value
-  const index = propertyIndex(table, propertyName);
+  const index = Number.isFinite(propertyName) ? propertyName : propertyIndex(table, propertyName);
 
   // sees if property value is inside the table or not
   const [isInTable, beforeOrAfter] = isInsideTable(table, index, propertyValue);
