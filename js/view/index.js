@@ -1,5 +1,8 @@
+import showCorrectTemperature from "./showCorrectTemperature.js";
 const UI = {
-  start() {},
+  start() {
+    showCorrectTemperature();
+  },
   control() {
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
