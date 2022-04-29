@@ -1,3 +1,10 @@
+/**
+ *
+ * @param {number[][]} table a specific thermodynamic tables
+ * @param {number} index index of property to find
+ * @param {number} propertyValue value of the property
+ * @returns {number[][]} an array containing surrounding results
+ */
 export default function (table, index, propertyValue) {
   // first find the size of a row in table
   const rowSize = table[0].length;

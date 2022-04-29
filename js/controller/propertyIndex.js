@@ -1,77 +1,61 @@
+/**
+ *
+ * @param {number[][]} table a specific thermodynamic tables
+ * @param {string} propertyName name of property that you need
+ * @returns {number} index of that property on its specific table
+ */
 export default function (table, propertyName) {
   const type = table[0].length === 14 ? "sat." : "super";
-  let index;
   if (type === "sat.") {
     switch (propertyName) {
       case "temp.":
-        index = 0;
-        break;
+        return 0;
       case "press.":
-        index = 1;
-        break;
+        return 1;
       case "v_sat.liquid": //specific volume
-        index = 2;
-        break;
+        return 2;
       case "v_evap.":
-        index = 3;
-        break;
+        return 3;
       case "v_sat.vapor":
-        index = 4;
-        break;
+        return 4;
       case "u_sat.liquid": //internal energy
-        index = 5;
-        break;
+        return 5;
       case "u_evap.":
-        index = 6;
-        break;
+        return 6;
       case "u_sat.vapor":
-        index = 7;
-        break;
+        return 7;
       case "h_sat.liquid": //specific enthalpy
-        index = 8;
-        break;
+        return 8;
       case "h_evap.":
-        index = 9;
-        break;
+        return 9;
       case "h_sat.vapor":
-        index = 10;
-        break;
+        return 10;
       case "s_sat.liquid": //specific entropy
-        index = 11;
-        break;
+        return 11;
       case "s_evap.":
-        index = 12;
-        break;
+        return 12;
       case "s_sat.vapor":
-        index = 13;
-        break;
+        return 13;
       default:
-        index = undefined;
+        return undefined;
     }
   }
   if (type === "super") {
     switch (propertyName) {
       case "press.":
-        index = 0;
-        break;
+        return 0;
       case "temp.":
-        index = 1;
-        break;
+        return 1;
       case "v":
-        index = 2;
-        break;
+        return 2;
       case "u":
-        index = 3;
-        break;
+        return 3;
       case "h":
-        index = 4;
-        break;
+        return 4;
       case "s":
-        index = 5;
-        break;
+        return 5;
       default:
-        index = undefined;
+        return undefined;
     }
   }
-  return index;
 }

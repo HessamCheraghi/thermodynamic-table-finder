@@ -12,7 +12,7 @@ const UI = {
     inputValidation();
 
     //testing
-    // controller();
+    controller();
     // this.control();
     //end of testing
   },

@@ -5,10 +5,11 @@ import onPressure from "./onPressure.js";
 
 //test data
 const x = {
-  substance: 2,
-  temperature: 17,
-  pressure: 900,
+  substance: 3,
+  temperature: -12,
+  pressure: null,
   specificVolume: null,
+  internalEnergy: 50,
   specificEnthalpy: null,
   specificEntropy: null,
   quality: null,

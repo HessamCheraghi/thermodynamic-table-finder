@@ -3,7 +3,7 @@ import interpolator from "../interpolator.js";
 import findSubstanceName from "./findSubstanceName.js";
 /**
  *
- * finds state based on input values
+ * finds state based on pressure and temperature
  * @param {number[][]} tables all thermodynamic tables
  * @param {Object.<string, ?number>} inputValues an object containing all property values
  * @returns {string} returns text explaining state of the substance

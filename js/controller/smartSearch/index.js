@@ -5,7 +5,7 @@ import findSurrounding from "./findSurrounding.js";
 /**
  *
  * searches dynamically based on property name and value
- * @param {Array} table all thermodynamic tables
+ * @param {number[][]} table a specific thermodynamic tables
  * @param {(string|number)} propertyName index of property. if a string was passed searches for index based on property name
  * @param {number} propertyValue value to find
  * @returns {{statusCode:string,statusMessage:string,result:undefined|[number]|[[number]]}} object containing result(s) and conclusion messages
