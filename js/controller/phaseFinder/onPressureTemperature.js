@@ -3,10 +3,10 @@ import interpolator from "../interpolator.js";
 import findSubstanceName from "./findSubstanceName.js";
 /**
  *
- * finds state based on pressure and temperature
+ * finds phase based on pressure and temperature
  * @param {number[][]} tables all thermodynamic tables
  * @param {Object.<string, ?number>} inputValues an object containing all property values
- * @returns {string} returns text explaining state of the substance
+ * @returns {string} returns text explaining phase of the substance
  */
 export default function (tables, inputValues) {
   const substance = inputValues.substance;
@@ -14,31 +14,31 @@ export default function (tables, inputValues) {
     // if it's water
     console.log("searching Saturated Water Temperature Entry... (TABLE B.1.1)");
     const tempResult = smartSearch(tables.b11, "temp.", inputValues.temperature);
-    let state;
+    let phase;
     if (tempResult.statusCode === "101") {
       // if the value is less then the first value of the table
-      state = "sat.solid-sat.vapor";
+      phase = "sat.solid-sat.vapor";
 
       console.log(tempResult.statusMessage);
-      console.log(`state of the substance is ${state}`);
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (tempResult.statusCode === "102") {
       // if the value is more then the last value of the table
-      state = "sup.vapor";
+      phase = "sup.vapor";
 
       console.log(tempResult.statusMessage);
-      console.log(`state of the substance is ${state}`);
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (tempResult.statusCode === "200") {
       // if the exact value has been found in temperature tables
-      state = inputValues.pressure > tempResult.result[1] ? "comp.liquid" : "sup.vapor";
+      phase = inputValues.pressure > tempResult.result[1] ? "comp.liquid" : "sup.vapor";
 
-      console.log("exact temperature has been found! we shall find the state in temperature tables");
-      console.log(`state of the substance is ${state}`);
+      console.log("exact temperature has been found! we shall find the phase in temperature tables");
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (tempResult.statusCode === "300") {
       // if the exact value has not been found in temperature tables
       console.log("didn't found exact temperature! let's take a quick look in pressure tables");
@@ -47,18 +47,18 @@ export default function (tables, inputValues) {
       console.error("there are some serious problems in your app");
     }
 
-    // now after searching temperature table if still didn't return state then search pressure table
+    // now after searching temperature table if still didn't return phase then search pressure table
     console.log("searching Saturated Water Pressure Entry... (TABLE B.1.2)");
     const pressResults = smartSearch(tables.b12, 0, inputValues.pressure);
 
     if (pressResults.statusCode === "200") {
       // if the exact value has been found in pressure tables
-      state = inputValues.temperature > pressResults.result[1] ? "sup.vapor" : "comp.liquid";
+      phase = inputValues.temperature > pressResults.result[1] ? "sup.vapor" : "comp.liquid";
 
-      console.log("exact pressure has been found! we shall find the state in pressure tables");
-      console.log(`state of the substance is ${state}`);
+      console.log("exact pressure has been found! we shall find the phase in pressure tables");
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (pressResults.statusCode === "300") {
       // if the exact value has not been found in temperature or pressure tables
       console.log("nope! not here, go back to temperature results");
@@ -71,52 +71,52 @@ export default function (tables, inputValues) {
     console.log("start interpolating values from temperature tables");
     const x = [inputValues.temperature, tempResult.result[0][0], tempResult.result[1][0], tempResult.result[0][1], tempResult.result[1][1]];
     const interpValue = interpolator(...x);
-    state = inputValues.pressure > interpValue ? "comp.liquid" : "sup.vapor";
+    phase = inputValues.pressure > interpValue ? "comp.liquid" : "sup.vapor";
 
-    console.log(`state of the substance is ${state}`);
+    console.log(`phase of the substance is ${phase}`);
 
-    return state;
+    return phase;
   } else {
     // if it's not water
     const substanceName = findSubstanceName(substance);
     console.log(`searching Saturated ${substanceName} Table... (TABLE B.${substance}.1)`);
     const tempResult = smartSearch(tables[`b${substance}1`], "temp.", inputValues.temperature);
-    let state;
+    let phase;
     if (tempResult.statusCode === "101") {
       // if the value is less then the first value of the table
-      state = "sat.solid-sat.vapor";
+      phase = "sat.solid-sat.vapor";
 
       console.log(tempResult.statusMessage);
-      console.log(`state of the substance is ${state}`);
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (tempResult.statusCode === "102") {
       // if the value is more then the last value of the table
-      state = "sup.vapor";
+      phase = "sup.vapor";
 
       console.log(tempResult.statusMessage);
-      console.log(`state of the substance is ${state}`);
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (tempResult.statusCode === "200") {
       // if the exact value has been found in temperature tables
-      state = inputValues.pressure > tempResult.result[1] ? "comp.liquid" : "sup.vapor";
+      phase = inputValues.pressure > tempResult.result[1] ? "comp.liquid" : "sup.vapor";
 
-      console.log("exact temperature has been found! we shall find the state in temperature tables");
-      console.log(`state of the substance is ${state}`);
+      console.log("exact temperature has been found! we shall find the phase in temperature tables");
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else if (tempResult.statusCode === "300") {
       // if the exact value has not been found in temperature tables
 
       console.log("didn't found exact temperature! start interpolating values from temperature tables");
       const x = [inputValues.temperature, tempResult.result[0][0], tempResult.result[1][0], tempResult.result[0][1], tempResult.result[1][1]];
       const interpValue = interpolator(...x);
-      state = inputValues.pressure > interpValue ? "comp.liquid" : "sup.vapor";
+      phase = inputValues.pressure > interpValue ? "comp.liquid" : "sup.vapor";
 
-      console.log(`state of the substance is ${state}`);
+      console.log(`phase of the substance is ${phase}`);
 
-      return state;
+      return phase;
     } else {
       // if somehow wrong of status codes were reported
       console.error("you tried very hard to find a bug in this app, congratulations!");

@@ -4,10 +4,10 @@ import findSubstanceName from "./findSubstanceName.js";
 import propertyIndex from "../propertyIndex.js";
 /**
  *
- * finds state based on temperature and another property (except pressure)
+ * finds phase based on temperature and another property (except pressure)
  * @param {object} tables all thermodynamic tables
  * @param {Object.<string, ?number>} inputValues an object containing all property values
- * @returns {string} returns text explaining state of the substance
+ * @returns {string} returns text explaining phase of the substance
  */
 export default function (tables, inputValues) {
   const substance = inputValues.substance;
@@ -46,44 +46,44 @@ export default function (tables, inputValues) {
   console.log(`searching Saturated ${substanceName} Table... (TABLE B.${substance}.1)`);
   const tempResult = smartSearch(table, "temp.", inputValues.temperature);
 
-  // finding state based on temperature result
-  let state;
+  // finding phase based on temperature result
+  let phase;
   if (tempResult.statusCode === "101") {
     // if the value is less then the first value of the table
-    state = "sat.solid-sat.vapor";
+    phase = "sat.solid-sat.vapor";
 
     console.log(tempResult.statusMessage);
-    console.log(`state of the substance is ${state}`);
+    console.log(`phase of the substance is ${phase}`);
 
-    return state;
+    return phase;
   } else if (tempResult.statusCode === "102") {
     // if the value is more then the last value of the table
-    state = "sup.vapor";
+    phase = "sup.vapor";
 
     console.log(tempResult.statusMessage);
-    console.log(`state of the substance is ${state}`);
+    console.log(`phase of the substance is ${phase}`);
 
-    return state;
+    return phase;
   } else if (tempResult.statusCode === "200") {
     // if the exact value has been found in temperature tables
-    console.log("exact temperature has been found! we shall find the state in temperature tables");
+    console.log("exact temperature has been found! we shall find the phase in temperature tables");
 
     // start comparison
     const satLiquid = tempResult.result[satLiquidIndex];
     const satVapor = tempResult.result[satVaporIndex];
     if (valueToCompare < satLiquid) {
       console.log(`valueToCompare < satLiquid => ${valueToCompare} < ${satLiquid}`);
-      state = "comp.liquid";
+      phase = "comp.liquid";
     } else if (valueToCompare > satVapor) {
       console.log(`valueToCompare > satVapor => ${valueToCompare} > ${satVapor}`);
-      state = "sup.vapor";
+      phase = "sup.vapor";
     } else if (valueToCompare > satLiquid && valueToCompare < satVapor) {
       console.log(`satLiquid < valueToCompare < satVapor => ${satLiquid} < ${valueToCompare} < ${satVapor}`);
-      state = "sat.vapor";
+      phase = "sat.vapor";
     }
-    console.log(`state of the substance is ${state}`);
+    console.log(`phase of the substance is ${phase}`);
 
-    return state;
+    return phase;
   } else if (tempResult.statusCode === "300") {
     // if the exact value has not been found in temperature tables
     console.log(tempResult.statusMessage);
@@ -110,17 +110,17 @@ export default function (tables, inputValues) {
     // start comparison
     if (valueToCompare < satLiquid) {
       console.log(`valueToCompare < satLiquid => ${valueToCompare} < ${satLiquid}`);
-      state = "comp.liquid";
+      phase = "comp.liquid";
     } else if (valueToCompare > satVapor) {
       console.log(`valueToCompare > satVapor => ${valueToCompare} > ${satVapor}`);
-      state = "sup.vapor";
+      phase = "sup.vapor";
     } else if (valueToCompare > satLiquid && valueToCompare < satVapor) {
       console.log(`satLiquid < valueToCompare < satVapor => ${satLiquid} < ${valueToCompare} < ${satVapor}`);
-      state = "sat.vapor";
+      phase = "sat.vapor";
     }
-    console.log(`state of the substance is ${state}`);
+    console.log(`phase of the substance is ${phase}`);
 
-    return state;
+    return phase;
   } else {
     // if somehow wrong of status codes were reported
     console.error("you tried very hard to find a bug in this app, congratulations!");

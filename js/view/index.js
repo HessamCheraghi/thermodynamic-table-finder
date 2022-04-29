@@ -11,15 +11,13 @@ const UI = {
     inputBlocker();
     inputValidation();
 
-    //testing
-    controller();
-    // this.control();
-    //end of testing
+    this.control();
   },
   control() {
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+      console.clear();
       controller(this.inputValues());
     });
   },

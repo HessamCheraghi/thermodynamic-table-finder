@@ -1,5 +1,5 @@
 import tables from "../model/data.js";
-import stateFinder from "./stateFinder/index.js";
+import phaseFinder from "./phaseFinder/index.js";
 export default function (inputValues) {
-  stateFinder(tables, inputValues);
+  phaseFinder(tables, inputValues);
 }
