@@ -4,6 +4,7 @@ export default function () {
     temperature: document.querySelector("#temperature").value,
     pressure: document.querySelector("#pressure").value,
     specificVolume: document.querySelector("#specific-volume").value,
+    internalEnergy: document.querySelector("#internal-energy").value,
     specificEnthalpy: document.querySelector("#specific-enthalpy").value,
     specificEntropy: document.querySelector("#specific-entropy").value,
     quality: document.querySelector("#quality").value,
