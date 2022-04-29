@@ -4,7 +4,7 @@ import findSubstanceName from "./findSubstanceName.js";
 import propertyIndex from "../propertyIndex.js";
 /**
  *
- * finds state based on temperature and another property (except pressure)
+ * finds state based on pressure and another property (except temperature)
  * @param {object} tables all thermodynamic tables
  * @param {Object.<string, ?number>} inputValues an object containing all property values
  * @returns {string} returns text explaining state of the substance
@@ -14,7 +14,7 @@ export default function (tables, inputValues) {
   const substanceName = findSubstanceName(substance);
 
   // store specific table
-  const table = tables[`b${substance}1`];
+  const table = inputValues.substance === 1 ? tables.b12 : tables[`b${substance}1`];
 
   // setting indexes to compare based on input values
   let satLiquidIndex;
@@ -43,34 +43,43 @@ export default function (tables, inputValues) {
   }
 
   // now start the search in saturated tables
-  console.log(`searching Saturated ${substanceName} Table... (TABLE B.${substance}.1)`);
-  const tempResult = smartSearch(table, "temp.", inputValues.temperature);
+  if (inputValues.substance === 1) {
+    console.log(`searching Saturated Water Pressure Entry Table... (TABLE B.1.2)`);
+  } else {
+    console.log(`searching Saturated ${substanceName} Table... (TABLE B.${substance}.1)`);
+  }
+  const pressResult = inputValues.substance === 1 ? smartSearch(table, 0, inputValues.pressure) : smartSearch(table, "press.", inputValues.pressure);
 
-  // finding state based on temperature result
+  // finding state based on pressure result
   let state;
-  if (tempResult.statusCode === "101") {
+  if (pressResult.statusCode === "101") {
     // if the value is less then the first value of the table
     state = "sat.solid-sat.vapor";
 
-    console.log(tempResult.statusMessage);
+    console.log(pressResult.statusMessage);
     console.log(`state of the substance is ${state}`);
 
     return state;
-  } else if (tempResult.statusCode === "102") {
+  } else if (pressResult.statusCode === "102") {
     // if the value is more then the last value of the table
     state = "sup.vapor";
 
-    console.log(tempResult.statusMessage);
+    console.log(pressResult.statusMessage);
     console.log(`state of the substance is ${state}`);
 
     return state;
-  } else if (tempResult.statusCode === "200") {
-    // if the exact value has been found in temperature tables
-    console.log("exact temperature has been found! we shall find the state in temperature tables");
+  } else if (pressResult.statusCode === "200") {
+    // if the exact value has been found in pressure tables
+    if (inputValues.substance === 1) {
+      console.log("exact pressure has been found! we shall find the state in pressure tables");
+    } else {
+      console.log("exact pressure has been found! we shall find the state in temperature tables");
+    }
 
     // start comparison
-    const satLiquid = tempResult.result[satLiquidIndex];
-    const satVapor = tempResult.result[satVaporIndex];
+    const satLiquid = pressResult.result[satLiquidIndex];
+    const satVapor = pressResult.result[satVaporIndex];
+
     if (valueToCompare < satLiquid) {
       console.log(`valueToCompare < satLiquid => ${valueToCompare} < ${satLiquid}`);
       state = "comp.liquid";
@@ -84,29 +93,29 @@ export default function (tables, inputValues) {
     console.log(`state of the substance is ${state}`);
 
     return state;
-  } else if (tempResult.statusCode === "300") {
-    // if the exact value has not been found in temperature tables
-    console.log(tempResult.statusMessage);
+  } else if (pressResult.statusCode === "300") {
+    // if the exact value has not been found in temperature (or pressure in water)tables
+    console.log(pressResult.statusMessage);
 
+    const pressureIndex = inputValues.substance === 1 ? 0 : 1;
     // interpolate values for saturation liquid and saturation vapor
-    const temperatureIndex = propertyIndex(table, "temp.");
     const x = [
-      inputValues.temperature,
-      tempResult.result[0][temperatureIndex],
-      tempResult.result[1][temperatureIndex],
-      tempResult.result[0][satLiquidIndex],
-      tempResult.result[1][satLiquidIndex],
+      inputValues.pressure,
+      pressResult.result[0][pressureIndex],
+      pressResult.result[1][pressureIndex],
+      pressResult.result[0][satLiquidIndex],
+      pressResult.result[1][satLiquidIndex],
     ];
     const satLiquid = interpolator(...x);
     const y = [
-      inputValues.temperature,
-      tempResult.result[0][temperatureIndex],
-      tempResult.result[1][temperatureIndex],
-      tempResult.result[0][satVaporIndex],
-      tempResult.result[1][satVaporIndex],
+      inputValues.pressure,
+      pressResult.result[0][pressureIndex],
+      pressResult.result[1][pressureIndex],
+      pressResult.result[0][satVaporIndex],
+      pressResult.result[1][satVaporIndex],
     ];
     const satVapor = interpolator(...y);
-
+    console.log(x, y);
     // start comparison
     if (valueToCompare < satLiquid) {
       console.log(`valueToCompare < satLiquid => ${valueToCompare} < ${satLiquid}`);
