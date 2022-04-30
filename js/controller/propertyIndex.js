@@ -5,7 +5,7 @@
  * @returns {number} index of that property on its specific table
  */
 export default function (table, propertyName) {
-  const type = table[0].length === 14 ? "sat." : "super";
+  const type = table[0].length === 14 ? "sat." : table[0].length === 6 ? "sup.vapor|comp.liquid" : undefined;
   if (type === "sat.") {
     switch (propertyName) {
       case "temp.":
@@ -40,7 +40,7 @@ export default function (table, propertyName) {
         return undefined;
     }
   }
-  if (type === "super") {
+  if (type === "sup.vapor|comp.liquid") {
     switch (propertyName) {
       case "press.":
         return 0;
@@ -57,5 +57,7 @@ export default function (table, propertyName) {
       default:
         return undefined;
     }
+  } else {
+    console.error("cannot find property index");
   }
 }

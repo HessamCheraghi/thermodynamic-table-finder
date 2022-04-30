@@ -11,23 +11,27 @@ const UI = {
     inputBlocker();
     inputValidation();
 
-    this.control();
+    //testing
+    controller();
+    // this.control();
+    //end of testing
+
+    document.querySelector("#clear-input").addEventListener("click", () => this.clear(true));
   },
   control() {
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      console.clear();
-      controller(this.inputValues());
+      this.clear();
+      controller(requestInputValues());
     });
   },
-  log(message) {},
-  clear() {},
-  update() {},
-
-  easterEgg() {},
-  inputValues() {
-    return requestInputValues();
+  log(message = "\n") {
+    console.log(message);
+  },
+  clear(everything = false) {
+    if (everything) console.log("clear everything");
+    else console.clear();
   },
 };
 export default UI;
