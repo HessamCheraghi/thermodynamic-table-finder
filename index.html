@@ -10,6 +10,20 @@
         min-height: 100vh;
         background-color: hsl(207, 61%, 53%);
       }
+      .checkbox {
+        display: none;
+      }
+      .tile.is-9.is-parent {
+        display: flex;
+      }
+      @media screen and (max-width: 768px) {
+        .checkbox {
+          display: inline-block;
+        }
+        .tile.is-9.is-parent {
+          display: none;
+        }
+      }
     </style>
     <script src="js/main.js" type="module"></script>
     <title>Thermodynamic Table Finder</title>
@@ -17,7 +31,7 @@
   <body>
     <section class="section">
       <div class="tile is-ancestor">
-        <div class="tile is-4 is-parent">
+        <div class="tile is-3 is-parent">
           <div class="tile is-child box" id="input">
             <p class="title">Input</p>
             <form>
@@ -84,7 +98,7 @@
               <div class="field">
                 <div class="control">
                   <label class="checkbox">
-                    <input id="show-calculations" type="checkbox" checked />
+                    <input id="show-calculations" type="checkbox" />
                     Show calculations
                   </label>
                 </div>
@@ -101,39 +115,7 @@
             </form>
           </div>
         </div>
-        <div class="tile is-8 is-vertical is-parent">
-          <div class="tile is-child box" id="result">
-            <p class="title">Result</p>
-            <div class="columns is-multiline">
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-              <div class="column is-full-tablet is-one-third-fullhd">
-                <code>is-one-third-fullhd is-half-tablet is-one-quarter-fullhd is-full-tablet</code>
-              </div>
-            </div>
-          </div>
+        <div class="tile is-9 is-parent">
           <div class="tile is-child box" id="calculations">
             <p class="title">Calculations</p>
             <div class="content">
