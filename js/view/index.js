@@ -4,34 +4,39 @@ import inputBlocker from "./inputBlocker.js";
 import inputValidation from "./inputValidation.js";
 import requestInputValues from "./requestInputValues.js";
 import controller from "../controller/index.js";
+import updateUI from "./updateUI.js";
 const UI = {
   start() {
     showCorrectTemperature();
     toggleCalculations();
     inputBlocker();
     inputValidation();
-
-    //testing
-    controller();
-    // this.control();
-    //end of testing
-
-    document.querySelector("#clear-input").addEventListener("click", () => this.clear(true));
+    this.control();
+    document.querySelector("#clear-input").addEventListener("click", () => this.clear());
   },
   control() {
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      this.clear();
       controller(requestInputValues());
     });
   },
-  log(message = "\n") {
+  log(message = "-------------------------") {
+    // logs messages to the UI and console
+    document.querySelector("pre").insertAdjacentText("beforeend", "\n" + message);
     console.log(message);
   },
-  clear(everything = false) {
-    if (everything) console.log("clear everything");
-    else console.clear();
+  clear() {
+    // only clears UI doesn't clears console
+    document.querySelector("pre").textContent = "#hello world";
+    document.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+      input.disabled = false;
+      input.required = true;
+    });
+  },
+  update(outputValues) {
+    updateUI(outputValues);
   },
 };
 export default UI;
