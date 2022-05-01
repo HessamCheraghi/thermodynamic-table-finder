@@ -1,7 +1,14 @@
 import isInsideTable from "./isInsideTable.js";
 import findSurrounding from "./findSurrounding.js";
 import smartSearch from "../../smartSearch/index.js";
-smartSearch;
+/**
+ *
+ * @param {number[][]} table
+ * @param {number} pressure
+ * @param {string} secondPropName
+ * @param {number} secondPropValue
+ * @returns results
+ */
 export default function (table, pressure, secondPropName, secondPropValue) {
   const pressureIndex = 0;
 
@@ -29,8 +36,6 @@ export default function (table, pressure, secondPropName, secondPropValue) {
   if (surrounding) {
     const x = smartSearch(surrounding[0], secondPropName, secondPropValue);
     const y = smartSearch(surrounding[1], secondPropName, secondPropValue);
-    console.log(x);
-    console.log(y);
 
     if (x.statusCode === "101" || y.statusCode === "101") {
       return {

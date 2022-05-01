@@ -8,7 +8,7 @@ export default function (inputValues) {
 
   //test data
 
-  const a = [tables.b13, "press.", 35, "temp.", 125];
+  const a = [tables.b13, "temp.", 225, "v", 20];
 
   //real data
   const b = [tables.b14, "press.", 4648.7, "s", 1.4241];
