@@ -1,6 +1,6 @@
 import smartSearch from "../smartSearch/index.js";
 import interpolator from "../interpolator.js";
-import findSubstanceName from "./findSubstanceName.js";
+import findSubstanceName from "../findSubstanceName.js";
 import propertyIndex from "../propertyIndex.js";
 /**
  *

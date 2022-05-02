@@ -13,7 +13,7 @@ export default function (tables, inputValues) {
     // send data to pressure temperature function
     phase = onPressureTemperature(tables, inputValues);
   } else if (inputValues.quality !== null) {
-    // send you already know the phase
+    // send... you already know the phase!
     console.log("quality value was detected");
     if (inputValues.quality === 0) {
       phase = "sat.liquid";

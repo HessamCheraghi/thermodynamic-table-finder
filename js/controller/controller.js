@@ -1,19 +1,14 @@
 import tables from "../model/data.js";
 import phaseFinder from "./phaseFinder/index.js";
-import twoDimensionalSearch from "./twoDimensionalSearch/index.js";
+import propertyFinder from "./propertyFinder/index.js";
 
 export default function (inputValues) {
-  // const phase = phaseFinder(tables, inputValues);
-  // console.log(phase);
+  // document.querySelector("pre").textContent = "";
 
-  //test data
+  const phase = phaseFinder(tables, inputValues);
 
-  const a = [tables.b13, "temp.", 225, "v", 20];
+  const outputValues = propertyFinder(tables, phase, inputValues);
+  console.log(outputValues);
 
-  //real data
-  const b = [tables.b14, "press.", 4648.7, "s", 1.4241];
-  const c = [tables.b52, "temp.", 13, "v", 0.3];
-  const d = [tables.b52, "press.", 1160.2, "s", 1.7354];
-  const res = twoDimensionalSearch(...a);
-  console.log(res);
+  // UI.update(outputValues);
 }
