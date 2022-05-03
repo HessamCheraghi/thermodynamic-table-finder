@@ -4,10 +4,10 @@ UI.start();
 
 const result = {
   substance: 1,
-  temperature: 102,
-  pressure: null,
+  temperature: 175,
+  pressure: 75,
   specificVolume: null,
-  internalEnergy: 2000,
+  internalEnergy: null,
   specificEnthalpy: null,
   specificEntropy: null,
   quality: null,

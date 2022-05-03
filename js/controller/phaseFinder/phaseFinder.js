@@ -17,10 +17,13 @@ export default function (tables, inputValues) {
     console.log("quality value was detected");
     if (inputValues.quality === 0) {
       phase = "sat.liquid";
-      console.log("phase of the substance is sup.vapor :=> quality = 0");
+      console.log("phase of the substance is sat.liquid => quality = 0");
+    } else if (inputValues.quality === 1) {
+      phase = "sat.vapor(fallback)";
+      console.log("phase of the substance is sat.vapor => quality = 1");
     } else {
       phase = "sat.vapor";
-      console.log("phase of the substance is sup.vapor :=> 0 < quality ≤ 1 ");
+      console.log("phase of the substance is sup.vapor => 0 < quality < 1 ");
     }
   } else if (inputValues.temperature) {
     // send data to temperature only function

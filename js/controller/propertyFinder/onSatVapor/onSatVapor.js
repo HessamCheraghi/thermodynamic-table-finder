@@ -1,6 +1,6 @@
-import smartSearch from "../smartSearch/index.js";
-import propertyIndex from "../propertyIndex.js";
-import interpolator from "../interpolator.js";
+import smartSearch from "../../smartSearch/index.js";
+import propertyIndex from "../../propertyIndex.js";
+import interpolator from "../../interpolator.js";
 /**
  *
  * @param {number[][]} tables all thermodynamic tables

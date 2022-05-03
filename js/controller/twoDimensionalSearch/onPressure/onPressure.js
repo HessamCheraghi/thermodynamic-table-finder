@@ -71,5 +71,18 @@ export default function (table, pressure, secondPropName, secondPropValue) {
         result: [...x.result, ...y.result],
       };
     }
+    return {
+      // the most edge case possible!
+      statusCode: "300" + x.statusCode + y.statusCode,
+      statusMessage:
+        "there was no exact pressure value but surrounding values has been found" +
+        `, searching for [${secondPropName}]...` +
+        " hmmm for the first one \n" +
+        x.statusMessage +
+        " and for the second, " +
+        y.statusMessage +
+        " this is interesting!",
+      result: [...(x.result.length === 6 ? [x.result] : x.result), ...(y.result.length === 6 ? [y.result] : y.result)],
+    };
   }
 }
