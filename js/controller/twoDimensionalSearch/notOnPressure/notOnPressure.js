@@ -10,8 +10,6 @@ import smartSearch from "../../smartSearch/index.js";
  * @returns result
  */
 export default function (table, firstPropName, firstPropValue, secondPropName, secondPropValue) {
-  // console.log({ table, firstPropName, firstPropValue, secondPropName, secondPropValue });
-
   // convert table into buckets of pressure tables!
   const uniquePressures = [...new Set(table.map((arr) => arr[0]))];
   const pressureBuckets = uniquePressures.map((pressureNumber) => table.filter((arr) => pressureNumber === arr[0]));

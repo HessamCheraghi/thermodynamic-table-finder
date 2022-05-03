@@ -1,5 +1,6 @@
 import propertyIndex from "../propertyIndex.js";
 import silentInterpolator from "./silentInterpolator.js";
+import UI from "../../view/index.js";
 /**
  *
  * @param {number[][]} table a specific thermodynamic table
@@ -71,21 +72,21 @@ export default function (table, result, propsToStart) {
       }
     });
   }
-  console.log("");
-  console.log("oh no heaviest calculation for this app !!!");
-  console.log("- DOUBLE INTERPOLATION -");
-  console.log("");
-  console.log("first this was result of search =>");
-  result.forEach((array) => console.log(`[${array.join(", ")}]`));
-  console.log("");
-  console.log("... then result of first interpolation =>");
+  UI.log("");
+  UI.log("oh no heaviest calculation for this app !!!");
+  UI.log("- DOUBLE INTERPOLATION -");
+  UI.log("");
+  UI.log("first this was result of search =>");
+  result.forEach((array) => UI.log(`[${array.join(", ")}]`));
+  UI.log("");
+  UI.log("... then result of first interpolation =>");
 
-  console.log(`[${firstConclusion.join(", ")}]`);
-  console.log(`[${secondConclusion.join(", ")}]`);
+  UI.log(`[${firstConclusion.join(", ")}]`);
+  UI.log(`[${secondConclusion.join(", ")}]`);
 
-  console.log("");
-  console.log("and now the final result, tada!!!");
-  console.log(`[${finalConclusion.join(", ")}]`);
+  UI.log("");
+  UI.log("and now the final result, tada!!!");
+  UI.log(`[${finalConclusion.join(", ")}]`);
 
   return finalConclusion;
 }

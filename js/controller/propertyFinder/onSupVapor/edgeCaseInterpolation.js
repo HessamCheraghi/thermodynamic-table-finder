@@ -1,5 +1,6 @@
 import silentInterpolator from "../silentInterpolator.js";
 import propertyIndex from "../../propertyIndex.js";
+import UI from "../../../view/index.js";
 /**
  *
  * @param {number[][]} table a specific thermodynamic table
@@ -75,12 +76,12 @@ export default function (table, results, statusCode, propsToStart) {
     });
   }
   //#endregion
-  console.log("");
-  console.log("this is an edge case, get ready! ");
-  console.log(`exact array => [${exactResults.join(", ")}]`);
-  console.log(`surrounding arrays =>\n [${firstSurrounding.join(", ")}],\n [${secondSurrounding.join(", ")}]`);
-  console.log(`interpolating surrounding arrays =>\n [${interpSurrounding.join(", ")}]`);
-  console.log(`interpolating two last arrays ...\nfinal result =>\n [${conclusion.join(", ")}]`);
+  UI.log("");
+  UI.log("this is an edge case, get ready! ");
+  UI.log(`exact array => [${exactResults.join(", ")}]`);
+  UI.log(`surrounding arrays =>\n [${firstSurrounding.join(", ")}],\n [${secondSurrounding.join(", ")}]`);
+  UI.log(`interpolating surrounding arrays =>\n [${interpSurrounding.join(", ")}]`);
+  UI.log(`interpolating two last arrays ...\nfinal result =>\n [${conclusion.join(", ")}]`);
 
   return conclusion;
 }

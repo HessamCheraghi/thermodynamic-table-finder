@@ -1,6 +1,7 @@
 import onPressureTemperature from "./onPressureTemperature.js";
 import onTemperature from "./onTemperature.js";
 import onPressure from "./onPressure.js";
+import UI from "../../view/index.js";
 /**
  *
  * @param {object} tables all thermodynamic tables
@@ -14,16 +15,16 @@ export default function (tables, inputValues) {
     phase = onPressureTemperature(tables, inputValues);
   } else if (inputValues.quality !== null) {
     // send... you already know the phase!
-    console.log("quality value was detected");
+    UI.log("quality value was detected");
     if (inputValues.quality === 0) {
       phase = "sat.liquid";
-      console.log("phase of the substance is sat.liquid => quality = 0");
+      UI.log("phase of the substance is sat.liquid => quality = 0");
     } else if (inputValues.quality === 1) {
       phase = "sat.vapor(fallback)";
-      console.log("phase of the substance is sat.vapor => quality = 1");
+      UI.log("phase of the substance is sat.vapor => quality = 1");
     } else {
       phase = "sat.vapor";
-      console.log("phase of the substance is sup.vapor => 0 < quality < 1 ");
+      UI.log("phase of the substance is sup.vapor => 0 < quality < 1 ");
     }
   } else if (inputValues.temperature) {
     // send data to temperature only function

@@ -1,6 +1,7 @@
 import propertyIndex from "../../propertyIndex.js";
 import smartSearch from "../../smartSearch/index.js";
 import interpolator from "../../interpolator.js";
+import UI from "../../../view/index.js";
 /**
  *
  * @param {object} tables all thermodynamic tables
@@ -20,13 +21,13 @@ export default function (tables, inputValues, phase) {
       const hIndex = propertyIndex(table, "h_sat.liquid");
       const sIndex = propertyIndex(table, "s_sat.liquid");
       const tempResult = smartSearch(table, "temp.", inputValues.temperature);
-      console.log(`searching table b.${inputValues.substance}.1`);
+      UI.log(`searching table b.${inputValues.substance}.1`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
       }
       if (tempResult.statusCode === "200") {
         const res = tempResult.result;
-        console.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
+        UI.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
         outputValues.pressure = inputValues.pressure ?? tempResult.result[pressIndex];
         outputValues.specificVolume = inputValues.specificVolume ?? tempResult.result[vIndex];
         outputValues.internalEnergy = inputValues.internalEnergy ?? tempResult.result[uIndex];
@@ -36,7 +37,7 @@ export default function (tables, inputValues, phase) {
       if (tempResult.statusCode === "300") {
         const temp = inputValues.temperature;
         const res = tempResult.result;
-        console.log(
+        UI.log(
           `found surrounding rows =>\n [${res[0][tempIndex]}, ${res[0][pressIndex]}, ${res[0][vIndex]}, ${res[0][uIndex]}, ${res[0][hIndex]}, ${res[0][sIndex]}],\n [${res[1][tempIndex]}, ${res[1][pressIndex]}, ${res[1][vIndex]}, ${res[1][uIndex]}, ${res[1][hIndex]}, ${res[1][sIndex]}]\n\n`
         );
         outputValues.pressure = inputValues.pressure ?? interpolator(temp, res[0][tempIndex], res[1][tempIndex], res[0][pressIndex], res[1][pressIndex]);
@@ -56,13 +57,13 @@ export default function (tables, inputValues, phase) {
       const hIndex = propertyIndex(table, "h_sat.liquid");
       const sIndex = propertyIndex(table, "s_sat.liquid");
       const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.temperature);
-      console.log(`searching table b1${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
+      UI.log(`searching table b1${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
       }
       if (tempResult.statusCode === "200") {
         const res = tempResult.result;
-        console.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
+        UI.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
         outputValues.pressure = inputValues.pressure ?? res[pressIndex];
         outputValues.specificVolume = inputValues.specificVolume ?? res[vIndex];
         outputValues.internalEnergy = inputValues.internalEnergy ?? res[uIndex];
@@ -72,7 +73,7 @@ export default function (tables, inputValues, phase) {
       if (tempResult.statusCode === "300") {
         const temp = inputValues.temperature;
         const res = tempResult.result;
-        console.log(
+        UI.log(
           `found surrounding rows =>\n [${res[0][tempIndex]}, ${res[0][pressIndex]}, ${res[0][vIndex]}, ${res[0][uIndex]}, ${res[0][hIndex]}, ${res[0][sIndex]}],\n [${res[1][tempIndex]}, ${res[1][pressIndex]}, ${res[1][vIndex]}, ${res[1][uIndex]}, ${res[1][hIndex]}, ${res[1][sIndex]}]\n\n`
         );
         outputValues.pressure = inputValues.pressure ?? interpolator(temp, res[0][tempIndex], res[1][tempIndex], res[0][pressIndex], res[1][pressIndex]);
@@ -95,13 +96,13 @@ export default function (tables, inputValues, phase) {
       const hIndex = propertyIndex(table, "h_sat.vapor");
       const sIndex = propertyIndex(table, "s_sat.vapor");
       const tempResult = smartSearch(table, "temp.", inputValues.temperature);
-      console.log(`searching table b.${inputValues.substance}.1`);
+      UI.log(`searching table b.${inputValues.substance}.1`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
       }
       if (tempResult.statusCode === "200") {
         const res = tempResult.result;
-        console.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
+        UI.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
         outputValues.pressure = inputValues.pressure ?? tempResult.result[pressIndex];
         outputValues.specificVolume = inputValues.specificVolume ?? tempResult.result[vIndex];
         outputValues.internalEnergy = inputValues.internalEnergy ?? tempResult.result[uIndex];
@@ -111,7 +112,7 @@ export default function (tables, inputValues, phase) {
       if (tempResult.statusCode === "300") {
         const temp = inputValues.temperature;
         const res = tempResult.result;
-        console.log(
+        UI.log(
           `found surrounding rows =>\n [${res[0][tempIndex]}, ${res[0][pressIndex]}, ${res[0][vIndex]}, ${res[0][uIndex]}, ${res[0][hIndex]}, ${res[0][sIndex]}],\n [${res[1][tempIndex]}, ${res[1][pressIndex]}, ${res[1][vIndex]}, ${res[1][uIndex]}, ${res[1][hIndex]}, ${res[1][sIndex]}]\n\n`
         );
         outputValues.pressure = inputValues.pressure ?? interpolator(temp, res[0][tempIndex], res[1][tempIndex], res[0][pressIndex], res[1][pressIndex]);
@@ -131,13 +132,13 @@ export default function (tables, inputValues, phase) {
       const hIndex = propertyIndex(table, "h_sat.vapor");
       const sIndex = propertyIndex(table, "s_sat.vapor");
       const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.temperature);
-      console.log(`searching table ${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
+      UI.log(`searching table ${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
       }
       if (tempResult.statusCode === "200") {
         const res = tempResult.result;
-        console.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
+        UI.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
         outputValues.pressure = inputValues.pressure ?? tempResult.result[pressIndex];
         outputValues.specificVolume = inputValues.specificVolume ?? tempResult.result[vIndex];
         outputValues.internalEnergy = inputValues.internalEnergy ?? tempResult.result[uIndex];
@@ -147,7 +148,7 @@ export default function (tables, inputValues, phase) {
       if (tempResult.statusCode === "300") {
         const temp = inputValues.temperature;
         const res = tempResult.result;
-        console.log(
+        UI.log(
           `found surrounding rows =>\n [${res[0][tempIndex]}, ${res[0][pressIndex]}, ${res[0][vIndex]}, ${res[0][uIndex]}, ${res[0][hIndex]}, ${res[0][sIndex]}],\n [${res[1][tempIndex]}, ${res[1][pressIndex]}, ${res[1][vIndex]}, ${res[1][uIndex]}, ${res[1][hIndex]}, ${res[1][sIndex]}]\n\n`
         );
         outputValues.pressure = inputValues.pressure ?? interpolator(temp, res[0][tempIndex], res[1][tempIndex], res[0][pressIndex], res[1][pressIndex]);

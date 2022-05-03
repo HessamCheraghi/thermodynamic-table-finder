@@ -1,6 +1,7 @@
 import smartSearch from "../../smartSearch/index.js";
 import propertyIndex from "../../propertyIndex.js";
 import interpolator from "../../interpolator.js";
+import UI from "../../../view/index.js";
 /**
  *
  * @param {number[][]} tables all thermodynamic tables
@@ -8,7 +9,7 @@ import interpolator from "../../interpolator.js";
  * @returns {Object.<string, ?number>}  an object containing all calculated values
  */
 export default function (tables, inputValues) {
-  console.log("");
+  UI.log("");
   const outputValues = { ...inputValues };
   const substance = inputValues.substance;
 
@@ -24,43 +25,43 @@ export default function (tables, inputValues) {
     if (pressResult.statusCode === "200") {
       //#region find saturation temperature
       outputValues.temperature = pressResult.result[tempIndex];
-      console.log(`saturated temperature is ${outputValues.temperature}`);
-      console.log("");
+      UI.log(`saturated temperature is ${outputValues.temperature}`);
+      UI.log("");
       //#endregion
 
       //#region find x
       if (inputValues.specificVolume) {
-        console.log("finding quality based on specific volume...");
+        UI.log("finding quality based on specific volume...");
         const vf = pressResult.result[propertyIndex(table, "v_sat.liquid")];
         const vfg = pressResult.result[propertyIndex(table, "v_evap.")];
         const quality = (inputValues.specificVolume - vf) / vfg;
-        console.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
+        UI.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
         outputValues.quality = quality;
       } else if (inputValues.internalEnergy) {
-        console.log("finding quality based on internal energy...");
+        UI.log("finding quality based on internal energy...");
         const uf = pressResult.result[propertyIndex(table, "u_sat.liquid")];
         const ufg = pressResult.result[propertyIndex(table, "u_evap.")];
         const quality = (inputValues.internalEnergy - uf) / ufg;
-        console.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
+        UI.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
         outputValues.quality = quality;
       } else if (inputValues.specificEnthalpy) {
-        console.log("finding quality based on specific enthalpy...");
+        UI.log("finding quality based on specific enthalpy...");
         const hf = pressResult.result[propertyIndex(table, "h_sat.liquid")];
         const hfg = pressResult.result[propertyIndex(table, "h_evap.")];
         const quality = (inputValues.specificEnthalpy - hf) / hfg;
-        console.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
+        UI.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
         outputValues.quality = quality;
       } else if (inputValues.specificEntropy) {
-        console.log("finding quality based on specific entropy...");
+        UI.log("finding quality based on specific entropy...");
         const sf = pressResult.result[propertyIndex(table, "s_sat.liquid")];
         const sfg = pressResult.result[propertyIndex(table, "s_evap.")];
         const quality = (inputValues.specificEntropy - sf) / sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
+        UI.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
         outputValues.quality = quality;
       }
       const quality = outputValues.quality;
-      console.log(`x = ${quality}`);
-      console.log("");
+      UI.log(`x = ${quality}`);
+      UI.log("");
       //#endregion
 
       //#region find v u h s
@@ -69,9 +70,9 @@ export default function (tables, inputValues) {
         const vfg = pressResult.result[propertyIndex(table, "v_evap.")];
         const v = vf + quality * vfg;
 
-        console.log("finding specific volume based on quality...");
-        console.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
-        console.log(`v = ${v}`);
+        UI.log("finding specific volume based on quality...");
+        UI.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
+        UI.log(`v = ${v}`);
 
         outputValues.specificVolume = v;
       }
@@ -80,9 +81,9 @@ export default function (tables, inputValues) {
         const ufg = pressResult.result[propertyIndex(table, "u_evap.")];
         const u = uf + quality * ufg;
 
-        console.log("finding internal energy based on quality...");
-        console.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
-        console.log(`u = ${u}`);
+        UI.log("finding internal energy based on quality...");
+        UI.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
+        UI.log(`u = ${u}`);
 
         outputValues.internalEnergy = u;
       }
@@ -91,9 +92,9 @@ export default function (tables, inputValues) {
         const hfg = pressResult.result[propertyIndex(table, "h_evap.")];
         const h = hf + quality * hfg;
 
-        console.log("finding specific enthalpy based on quality...");
-        console.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
-        console.log(`h = ${h}`);
+        UI.log("finding specific enthalpy based on quality...");
+        UI.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
+        UI.log(`h = ${h}`);
 
         outputValues.specificEnthalpy = h;
       }
@@ -102,9 +103,9 @@ export default function (tables, inputValues) {
         const sfg = pressResult.result[propertyIndex(table, "s_evap.")];
         const s = sf + quality * sfg;
 
-        console.log("finding specific entropy based on quality...");
-        console.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
-        console.log(`s = ${s}`);
+        UI.log("finding specific entropy based on quality...");
+        UI.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
+        UI.log(`s = ${s}`);
 
         outputValues.specificEntropy = s;
       }
@@ -115,7 +116,7 @@ export default function (tables, inputValues) {
       // if didn't found exact temperature =>
 
       //#region find temperature
-      console.log("start interpolation to find saturated temperature");
+      UI.log("start interpolation to find saturated temperature");
       const temperature = interpolator(
         pressure,
         pressResult.result[0][pressIndex],
@@ -124,13 +125,13 @@ export default function (tables, inputValues) {
         pressResult.result[1][tempIndex]
       );
       outputValues.temperature = temperature;
-      console.log(`saturated temperature is ${outputValues.temperature}`);
-      console.log("");
+      UI.log(`saturated temperature is ${outputValues.temperature}`);
+      UI.log("");
       //#endregion
 
       //#region find x
       if (inputValues.specificVolume) {
-        console.log("finding quality based on specific volume...");
+        UI.log("finding quality based on specific volume...");
         const vfIndex = propertyIndex(table, "v_sat.liquid");
         const vfgIndex = propertyIndex(table, "v_evap.");
 
@@ -151,11 +152,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificVolume - vf) / vfg;
-        console.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
+        UI.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
         outputValues.quality = quality;
       }
       if (inputValues.internalEnergy) {
-        console.log("finding quality based on internal energy...");
+        UI.log("finding quality based on internal energy...");
         const ufIndex = propertyIndex(table, "u_sat.liquid");
         const ufgIndex = propertyIndex(table, "u_evap.");
 
@@ -176,11 +177,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.internalEnergy - uf) / ufg;
-        console.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
+        UI.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
         outputValues.quality = quality;
       }
       if (inputValues.specificEnthalpy) {
-        console.log("finding quality based on specific enthalpy...");
+        UI.log("finding quality based on specific enthalpy...");
         const hfIndex = propertyIndex(table, "h_sat.liquid");
         const hfgIndex = propertyIndex(table, "h_evap.");
 
@@ -201,11 +202,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificEnthalpy - hf) / hfg;
-        console.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
+        UI.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
         outputValues.quality = quality;
       }
       if (inputValues.specificEntropy) {
-        console.log("finding quality based on specific entropy...");
+        UI.log("finding quality based on specific entropy...");
         const sfIndex = propertyIndex(table, "s_sat.liquid");
         const sfgIndex = propertyIndex(table, "s_evap.");
 
@@ -226,17 +227,17 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificEntropy - sf) / sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
+        UI.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
         outputValues.quality = quality;
       }
       const quality = outputValues.quality;
-      console.log(`x = ${quality}`);
-      console.log("");
+      UI.log(`x = ${quality}`);
+      UI.log("");
       //#endregion
 
       //#region find v u h s
       if (inputValues.specificVolume === null) {
-        console.log("finding specific volume based on quality...");
+        UI.log("finding specific volume based on quality...");
 
         const vfIndex = propertyIndex(table, "v_sat.liquid");
         const vfgIndex = propertyIndex(table, "v_evap.");
@@ -258,14 +259,14 @@ export default function (tables, inputValues) {
         );
         const v = vf + quality * vfg;
 
-        console.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
-        console.log(`v = ${v}`);
-        console.log("");
+        UI.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
+        UI.log(`v = ${v}`);
+        UI.log("");
 
         outputValues.specificVolume = v;
       }
       if (inputValues.internalEnergy === null) {
-        console.log("finding internal energy based on quality...");
+        UI.log("finding internal energy based on quality...");
 
         const ufIndex = propertyIndex(table, "u_sat.liquid");
         const ufgIndex = propertyIndex(table, "u_evap.");
@@ -287,14 +288,14 @@ export default function (tables, inputValues) {
         );
         const u = uf + quality * ufg;
 
-        console.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
-        console.log(`u = ${u}`);
-        console.log("");
+        UI.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
+        UI.log(`u = ${u}`);
+        UI.log("");
 
         outputValues.internalEnergy = u;
       }
       if (inputValues.specificEnthalpy === null) {
-        console.log("finding specific enthalpy based on quality...");
+        UI.log("finding specific enthalpy based on quality...");
         const hfIndex = propertyIndex(table, "h_sat.liquid");
         const hfgIndex = propertyIndex(table, "h_evap.");
 
@@ -315,14 +316,14 @@ export default function (tables, inputValues) {
         );
         const h = hf + quality * hfg;
 
-        console.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
-        console.log(`h = ${h}`);
-        console.log("");
+        UI.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
+        UI.log(`h = ${h}`);
+        UI.log("");
 
         outputValues.specificEnthalpy = h;
       }
       if (inputValues.specificEntropy === null) {
-        console.log("finding specific entropy based on quality...");
+        UI.log("finding specific entropy based on quality...");
 
         const sfIndex = propertyIndex(table, "s_sat.liquid");
         const sfgIndex = propertyIndex(table, "s_evap.");
@@ -343,9 +344,9 @@ export default function (tables, inputValues) {
           pressResult.result[1][sfgIndex]
         );
         const s = sf + quality * sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
-        console.log(`s = ${s}`);
-        console.log("");
+        UI.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
+        UI.log(`s = ${s}`);
+        UI.log("");
 
         outputValues.specificEntropy = s;
       }
@@ -364,43 +365,43 @@ export default function (tables, inputValues) {
     if (tempResult.statusCode === "200") {
       //#region find pressure
       outputValues.pressure = tempResult.result[pressIndex];
-      console.log(`saturated pressure is ${outputValues.pressure}`);
-      console.log("");
+      UI.log(`saturated pressure is ${outputValues.pressure}`);
+      UI.log("");
       //#endregion
 
       //#region find x
       if (inputValues.specificVolume) {
-        console.log("finding quality based on specific volume...");
+        UI.log("finding quality based on specific volume...");
         const vf = tempResult.result[propertyIndex(table, "v_sat.liquid")];
         const vfg = tempResult.result[propertyIndex(table, "v_evap.")];
         const quality = (inputValues.specificVolume - vf) / vfg;
-        console.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
+        UI.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
         outputValues.quality = quality;
       } else if (inputValues.internalEnergy) {
-        console.log("finding quality based on internal energy...");
+        UI.log("finding quality based on internal energy...");
         const uf = tempResult.result[propertyIndex(table, "u_sat.liquid")];
         const ufg = tempResult.result[propertyIndex(table, "u_evap.")];
         const quality = (inputValues.internalEnergy - uf) / ufg;
-        console.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
+        UI.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
         outputValues.quality = quality;
       } else if (inputValues.specificEnthalpy) {
-        console.log("finding quality based on specific enthalpy...");
+        UI.log("finding quality based on specific enthalpy...");
         const hf = tempResult.result[propertyIndex(table, "h_sat.liquid")];
         const hfg = tempResult.result[propertyIndex(table, "h_evap.")];
         const quality = (inputValues.specificEnthalpy - hf) / hfg;
-        console.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
+        UI.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
         outputValues.quality = quality;
       } else if (inputValues.specificEntropy) {
-        console.log("finding quality based on specific entropy...");
+        UI.log("finding quality based on specific entropy...");
         const sf = tempResult.result[propertyIndex(table, "s_sat.liquid")];
         const sfg = tempResult.result[propertyIndex(table, "s_evap.")];
         const quality = (inputValues.specificEntropy - sf) / sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
+        UI.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
         outputValues.quality = quality;
       }
       const quality = outputValues.quality;
-      console.log(`x = ${quality}`);
-      console.log("");
+      UI.log(`x = ${quality}`);
+      UI.log("");
       //#endregion
 
       //#region find v u h s
@@ -409,9 +410,9 @@ export default function (tables, inputValues) {
         const vfg = tempResult.result[propertyIndex(table, "v_evap.")];
         const v = vf + quality * vfg;
 
-        console.log("finding specific volume based on quality...");
-        console.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
-        console.log(`v = ${v}`);
+        UI.log("finding specific volume based on quality...");
+        UI.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
+        UI.log(`v = ${v}`);
 
         outputValues.specificVolume = v;
       }
@@ -420,9 +421,9 @@ export default function (tables, inputValues) {
         const ufg = tempResult.result[propertyIndex(table, "u_evap.")];
         const u = uf + quality * ufg;
 
-        console.log("finding internal energy based on quality...");
-        console.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
-        console.log(`u = ${u}`);
+        UI.log("finding internal energy based on quality...");
+        UI.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
+        UI.log(`u = ${u}`);
 
         outputValues.internalEnergy = u;
       }
@@ -431,9 +432,9 @@ export default function (tables, inputValues) {
         const hfg = tempResult.result[propertyIndex(table, "h_evap.")];
         const h = hf + quality * hfg;
 
-        console.log("finding specific enthalpy based on quality...");
-        console.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
-        console.log(`h = ${h}`);
+        UI.log("finding specific enthalpy based on quality...");
+        UI.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
+        UI.log(`h = ${h}`);
 
         outputValues.specificEnthalpy = h;
       }
@@ -442,9 +443,9 @@ export default function (tables, inputValues) {
         const sfg = tempResult.result[propertyIndex(table, "s_evap.")];
         const s = sf + quality * sfg;
 
-        console.log("finding specific entropy based on quality...");
-        console.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
-        console.log(`s = ${s}`);
+        UI.log("finding specific entropy based on quality...");
+        UI.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
+        UI.log(`s = ${s}`);
 
         outputValues.specificEntropy = s;
       }
@@ -455,7 +456,7 @@ export default function (tables, inputValues) {
       // if didn't found exact temperature =>
 
       //#region find pressure
-      console.log("start interpolation to find saturated pressure");
+      UI.log("start interpolation to find saturated pressure");
       const pressure = interpolator(
         temp,
         tempResult.result[0][tempIndex],
@@ -464,13 +465,13 @@ export default function (tables, inputValues) {
         tempResult.result[1][pressIndex]
       );
       outputValues.pressure = pressure;
-      console.log(`saturated pressure is ${outputValues.pressure}`);
-      console.log("");
+      UI.log(`saturated pressure is ${outputValues.pressure}`);
+      UI.log("");
       //#endregion
 
       //#region find x
       if (inputValues.specificVolume) {
-        console.log("finding quality based on specific volume...");
+        UI.log("finding quality based on specific volume...");
         const vfIndex = propertyIndex(table, "v_sat.liquid");
         const vfgIndex = propertyIndex(table, "v_evap.");
 
@@ -491,11 +492,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificVolume - vf) / vfg;
-        console.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
+        UI.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
         outputValues.quality = quality;
       }
       if (inputValues.internalEnergy) {
-        console.log("finding quality based on internal energy...");
+        UI.log("finding quality based on internal energy...");
         const ufIndex = propertyIndex(table, "u_sat.liquid");
         const ufgIndex = propertyIndex(table, "u_evap.");
 
@@ -516,11 +517,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.internalEnergy - uf) / ufg;
-        console.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
+        UI.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
         outputValues.quality = quality;
       }
       if (inputValues.specificEnthalpy) {
-        console.log("finding quality based on specific enthalpy...");
+        UI.log("finding quality based on specific enthalpy...");
         const hfIndex = propertyIndex(table, "h_sat.liquid");
         const hfgIndex = propertyIndex(table, "h_evap.");
 
@@ -541,11 +542,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificEnthalpy - hf) / hfg;
-        console.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
+        UI.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
         outputValues.quality = quality;
       }
       if (inputValues.specificEntropy) {
-        console.log("finding quality based on specific entropy...");
+        UI.log("finding quality based on specific entropy...");
         const sfIndex = propertyIndex(table, "s_sat.liquid");
         const sfgIndex = propertyIndex(table, "s_evap.");
 
@@ -566,17 +567,17 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificEntropy - sf) / sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
+        UI.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
         outputValues.quality = quality;
       }
       const quality = outputValues.quality;
-      console.log(`x = ${quality}`);
-      console.log("");
+      UI.log(`x = ${quality}`);
+      UI.log("");
       //#endregion
 
       //#region find v u h s
       if (inputValues.specificVolume === null) {
-        console.log("finding specific volume based on quality...");
+        UI.log("finding specific volume based on quality...");
 
         const vfIndex = propertyIndex(table, "v_sat.liquid");
         const vfgIndex = propertyIndex(table, "v_evap.");
@@ -598,14 +599,14 @@ export default function (tables, inputValues) {
         );
         const v = vf + quality * vfg;
 
-        console.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
-        console.log(`v = ${v}`);
-        console.log("");
+        UI.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
+        UI.log(`v = ${v}`);
+        UI.log("");
 
         outputValues.specificVolume = v;
       }
       if (inputValues.internalEnergy === null) {
-        console.log("finding internal energy based on quality...");
+        UI.log("finding internal energy based on quality...");
 
         const ufIndex = propertyIndex(table, "u_sat.liquid");
         const ufgIndex = propertyIndex(table, "u_evap.");
@@ -627,14 +628,14 @@ export default function (tables, inputValues) {
         );
         const u = uf + quality * ufg;
 
-        console.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
-        console.log(`u = ${u}`);
-        console.log("");
+        UI.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
+        UI.log(`u = ${u}`);
+        UI.log("");
 
         outputValues.internalEnergy = u;
       }
       if (inputValues.specificEnthalpy === null) {
-        console.log("finding specific enthalpy based on quality...");
+        UI.log("finding specific enthalpy based on quality...");
         const hfIndex = propertyIndex(table, "h_sat.liquid");
         const hfgIndex = propertyIndex(table, "h_evap.");
 
@@ -655,14 +656,14 @@ export default function (tables, inputValues) {
         );
         const h = hf + quality * hfg;
 
-        console.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
-        console.log(`h = ${h}`);
-        console.log("");
+        UI.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
+        UI.log(`h = ${h}`);
+        UI.log("");
 
         outputValues.specificEnthalpy = h;
       }
       if (inputValues.specificEntropy === null) {
-        console.log("finding specific entropy based on quality...");
+        UI.log("finding specific entropy based on quality...");
 
         const sfIndex = propertyIndex(table, "s_sat.liquid");
         const sfgIndex = propertyIndex(table, "s_evap.");
@@ -683,9 +684,9 @@ export default function (tables, inputValues) {
           tempResult.result[1][sfgIndex]
         );
         const s = sf + quality * sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
-        console.log(`s = ${s}`);
-        console.log("");
+        UI.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
+        UI.log(`s = ${s}`);
+        UI.log("");
 
         outputValues.specificEntropy = s;
       }
@@ -704,43 +705,43 @@ export default function (tables, inputValues) {
     if (pressResult.statusCode === "200") {
       //#region find saturation temperature
       outputValues.temperature = pressResult.result[tempIndex];
-      console.log(`saturated temperature is ${outputValues.temperature}`);
-      console.log("");
+      UI.log(`saturated temperature is ${outputValues.temperature}`);
+      UI.log("");
       //#endregion
 
       //#region find x
       if (inputValues.specificVolume) {
-        console.log("finding quality based on specific volume...");
+        UI.log("finding quality based on specific volume...");
         const vf = pressResult.result[propertyIndex(table, "v_sat.liquid")];
         const vfg = pressResult.result[propertyIndex(table, "v_evap.")];
         const quality = (inputValues.specificVolume - vf) / vfg;
-        console.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
+        UI.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
         outputValues.quality = quality;
       } else if (inputValues.internalEnergy) {
-        console.log("finding quality based on internal energy...");
+        UI.log("finding quality based on internal energy...");
         const uf = pressResult.result[propertyIndex(table, "u_sat.liquid")];
         const ufg = pressResult.result[propertyIndex(table, "u_evap.")];
         const quality = (inputValues.internalEnergy - uf) / ufg;
-        console.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
+        UI.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
         outputValues.quality = quality;
       } else if (inputValues.specificEnthalpy) {
-        console.log("finding quality based on specific enthalpy...");
+        UI.log("finding quality based on specific enthalpy...");
         const hf = pressResult.result[propertyIndex(table, "h_sat.liquid")];
         const hfg = pressResult.result[propertyIndex(table, "h_evap.")];
         const quality = (inputValues.specificEnthalpy - hf) / hfg;
-        console.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
+        UI.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
         outputValues.quality = quality;
       } else if (inputValues.specificEntropy) {
-        console.log("finding quality based on specific entropy...");
+        UI.log("finding quality based on specific entropy...");
         const sf = pressResult.result[propertyIndex(table, "s_sat.liquid")];
         const sfg = pressResult.result[propertyIndex(table, "s_evap.")];
         const quality = (inputValues.specificEntropy - sf) / sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
+        UI.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
         outputValues.quality = quality;
       }
       const quality = outputValues.quality;
-      console.log(`x = ${quality}`);
-      console.log("");
+      UI.log(`x = ${quality}`);
+      UI.log("");
       //#endregion
 
       //#region find v u h s
@@ -749,9 +750,9 @@ export default function (tables, inputValues) {
         const vfg = pressResult.result[propertyIndex(table, "v_evap.")];
         const v = vf + quality * vfg;
 
-        console.log("finding specific volume based on quality...");
-        console.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
-        console.log(`v = ${v}`);
+        UI.log("finding specific volume based on quality...");
+        UI.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
+        UI.log(`v = ${v}`);
 
         outputValues.specificVolume = v;
       }
@@ -760,9 +761,9 @@ export default function (tables, inputValues) {
         const ufg = pressResult.result[propertyIndex(table, "u_evap.")];
         const u = uf + quality * ufg;
 
-        console.log("finding internal energy based on quality...");
-        console.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
-        console.log(`u = ${u}`);
+        UI.log("finding internal energy based on quality...");
+        UI.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
+        UI.log(`u = ${u}`);
 
         outputValues.internalEnergy = u;
       }
@@ -771,9 +772,9 @@ export default function (tables, inputValues) {
         const hfg = pressResult.result[propertyIndex(table, "h_evap.")];
         const h = hf + quality * hfg;
 
-        console.log("finding specific enthalpy based on quality...");
-        console.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
-        console.log(`h = ${h}`);
+        UI.log("finding specific enthalpy based on quality...");
+        UI.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
+        UI.log(`h = ${h}`);
 
         outputValues.specificEnthalpy = h;
       }
@@ -782,9 +783,9 @@ export default function (tables, inputValues) {
         const sfg = pressResult.result[propertyIndex(table, "s_evap.")];
         const s = sf + quality * sfg;
 
-        console.log("finding specific entropy based on quality...");
-        console.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
-        console.log(`s = ${s}`);
+        UI.log("finding specific entropy based on quality...");
+        UI.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
+        UI.log(`s = ${s}`);
 
         outputValues.specificEntropy = s;
       }
@@ -795,7 +796,7 @@ export default function (tables, inputValues) {
       // if didn't found exact temperature =>
 
       //#region find temperature
-      console.log("start interpolation to find saturated temperature");
+      UI.log("start interpolation to find saturated temperature");
       const temperature = interpolator(
         pressure,
         pressResult.result[0][pressIndex],
@@ -804,13 +805,13 @@ export default function (tables, inputValues) {
         pressResult.result[1][tempIndex]
       );
       outputValues.temperature = temperature;
-      console.log(`saturated temperature is ${outputValues.temperature}`);
-      console.log("");
+      UI.log(`saturated temperature is ${outputValues.temperature}`);
+      UI.log("");
       //#endregion
 
       //#region find x
       if (inputValues.specificVolume) {
-        console.log("finding quality based on specific volume...");
+        UI.log("finding quality based on specific volume...");
         const vfIndex = propertyIndex(table, "v_sat.liquid");
         const vfgIndex = propertyIndex(table, "v_evap.");
 
@@ -831,11 +832,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificVolume - vf) / vfg;
-        console.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
+        UI.log(`vf = ${vf}, vfg = ${vfg}, x = (${inputValues.specificVolume} - ${vf}) / ${vfg}`);
         outputValues.quality = quality;
       }
       if (inputValues.internalEnergy) {
-        console.log("finding quality based on internal energy...");
+        UI.log("finding quality based on internal energy...");
         const ufIndex = propertyIndex(table, "u_sat.liquid");
         const ufgIndex = propertyIndex(table, "u_evap.");
 
@@ -856,11 +857,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.internalEnergy - uf) / ufg;
-        console.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
+        UI.log(`uf = ${uf}, ufg = ${ufg}, x = (${inputValues.internalEnergy} - ${uf}) / ${ufg}`);
         outputValues.quality = quality;
       }
       if (inputValues.specificEnthalpy) {
-        console.log("finding quality based on specific enthalpy...");
+        UI.log("finding quality based on specific enthalpy...");
         const hfIndex = propertyIndex(table, "h_sat.liquid");
         const hfgIndex = propertyIndex(table, "h_evap.");
 
@@ -881,11 +882,11 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificEnthalpy - hf) / hfg;
-        console.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
+        UI.log(`hf = ${hf}, hfg = ${hfg}, x = (${inputValues.specificEnthalpy} - ${hf}) / ${hfg}`);
         outputValues.quality = quality;
       }
       if (inputValues.specificEntropy) {
-        console.log("finding quality based on specific entropy...");
+        UI.log("finding quality based on specific entropy...");
         const sfIndex = propertyIndex(table, "s_sat.liquid");
         const sfgIndex = propertyIndex(table, "s_evap.");
 
@@ -906,17 +907,17 @@ export default function (tables, inputValues) {
         );
 
         const quality = (inputValues.specificEntropy - sf) / sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
+        UI.log(`sf = ${sf}, sfg = ${sfg}, x = (${inputValues.specificEntropy} - ${sf}) / ${sfg}`);
         outputValues.quality = quality;
       }
       const quality = outputValues.quality;
-      console.log(`x = ${quality}`);
-      console.log("");
+      UI.log(`x = ${quality}`);
+      UI.log("");
       //#endregion
 
       //#region find v u h s
       if (inputValues.specificVolume === null) {
-        console.log("finding specific volume based on quality...");
+        UI.log("finding specific volume based on quality...");
 
         const vfIndex = propertyIndex(table, "v_sat.liquid");
         const vfgIndex = propertyIndex(table, "v_evap.");
@@ -938,14 +939,14 @@ export default function (tables, inputValues) {
         );
         const v = vf + quality * vfg;
 
-        console.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
-        console.log(`v = ${v}`);
-        console.log("");
+        UI.log(`vf = ${vf}, vfg = ${vfg}, v = (${vf} + ${quality} * ${vfg})`);
+        UI.log(`v = ${v}`);
+        UI.log("");
 
         outputValues.specificVolume = v;
       }
       if (inputValues.internalEnergy === null) {
-        console.log("finding internal energy based on quality...");
+        UI.log("finding internal energy based on quality...");
 
         const ufIndex = propertyIndex(table, "u_sat.liquid");
         const ufgIndex = propertyIndex(table, "u_evap.");
@@ -967,14 +968,14 @@ export default function (tables, inputValues) {
         );
         const u = uf + quality * ufg;
 
-        console.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
-        console.log(`u = ${u}`);
-        console.log("");
+        UI.log(`uf = ${uf}, ufg = ${ufg}, u = (${uf} + ${quality} * ${ufg})`);
+        UI.log(`u = ${u}`);
+        UI.log("");
 
         outputValues.internalEnergy = u;
       }
       if (inputValues.specificEnthalpy === null) {
-        console.log("finding specific enthalpy based on quality...");
+        UI.log("finding specific enthalpy based on quality...");
         const hfIndex = propertyIndex(table, "h_sat.liquid");
         const hfgIndex = propertyIndex(table, "h_evap.");
 
@@ -995,14 +996,14 @@ export default function (tables, inputValues) {
         );
         const h = hf + quality * hfg;
 
-        console.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
-        console.log(`h = ${h}`);
-        console.log("");
+        UI.log(`hf = ${hf}, hfg = ${hfg}, h = (${hf} + ${quality} * ${hfg})`);
+        UI.log(`h = ${h}`);
+        UI.log("");
 
         outputValues.specificEnthalpy = h;
       }
       if (inputValues.specificEntropy === null) {
-        console.log("finding specific entropy based on quality...");
+        UI.log("finding specific entropy based on quality...");
 
         const sfIndex = propertyIndex(table, "s_sat.liquid");
         const sfgIndex = propertyIndex(table, "s_evap.");
@@ -1023,9 +1024,9 @@ export default function (tables, inputValues) {
           pressResult.result[1][sfgIndex]
         );
         const s = sf + quality * sfg;
-        console.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
-        console.log(`s = ${s}`);
-        console.log("");
+        UI.log(`sf = ${sf}, sfg = ${sfg}, s = (${sf} + ${quality} * ${sfg})`);
+        UI.log(`s = ${s}`);
+        UI.log("");
 
         outputValues.specificEntropy = s;
       }

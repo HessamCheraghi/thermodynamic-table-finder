@@ -1,3 +1,4 @@
+import UI from "../view/index.js";
 /**
  *
  * @param {number} x
@@ -8,8 +9,8 @@
  * @returns {number}
  */
 export default function (x, x1, x2, y1, y2) {
-  console.log("interpolating...");
+  UI.log("interpolating...");
   const y = y1 + ((x - x1) * (y2 - y1)) / (x2 - x1);
-  console.log(`${y1} + ((${x} - ${x1}) * (${y2} - ${y1})) / (${x2} - ${x1})   =   ${y}`);
+  UI.log(`${y1} + ((${x} - ${x1}) * (${y2} - ${y1})) / (${x2} - ${x1})   =   ${y}`);
   return y;
 }

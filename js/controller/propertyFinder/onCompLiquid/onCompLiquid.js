@@ -4,6 +4,7 @@ import doubleInterpolator from "../doubleInterpolator.js";
 import inputReader from "../inputReader.js";
 import ancillary from "./ancillary.js";
 import fallback from "../fallback/index.js";
+import UI from "../../../view/index.js";
 /**
  *
  * @param {object} tables all thermodynamic tables
@@ -21,12 +22,12 @@ export default function (tables, inputValues) {
   const searchResult = twoDimensionalSearch(table, ...propsToStart);
   const outputValues = { ...inputValues };
 
-  console.log("");
-  console.log(`searching Compressed Liquid Water... (TABLE B.1.4)`);
-  console.log(searchResult.statusMessage);
+  UI.log("");
+  UI.log(`searching Compressed Liquid Water... (TABLE B.1.4)`);
+  UI.log(searchResult.statusMessage);
   let finalResult;
   if (searchResult.statusCode === "101" || searchResult.statusCode === "200101" || searchResult.statusCode === "300101") {
-    console.log("didn't found requested values in Compressed Liquid tables take Saturated liquid values instead =>");
+    UI.log("didn't found requested values in Compressed Liquid tables take Saturated liquid values instead =>");
     return fallback(tables, inputValues, "sat.liquid");
   }
   if (searchResult.statusCode === "102" || searchResult.statusCode === "200102" || searchResult.statusCode === "300102") {
@@ -37,7 +38,7 @@ export default function (tables, inputValues) {
   }
   if (searchResult.statusCode === "200300" || searchResult.statusCode === "300200") {
     finalResult = ancillary(table, searchResult.result, propsToStart);
-    searchResult.result.forEach((array) => console.log(`[${array.join(", ")}]`));
+    searchResult.result.forEach((array) => UI.log(`[${array.join(", ")}]`));
   }
   if (searchResult.statusCode === "300300") {
     finalResult = doubleInterpolator(table, searchResult.result, propsToStart);
@@ -47,7 +48,7 @@ export default function (tables, inputValues) {
   }
 
   //#region return results here!
-  console.log("");
+  UI.log("");
   outputValues.pressure = finalResult[0];
   outputValues.temperature = finalResult[1];
   outputValues.specificVolume = finalResult[2];
