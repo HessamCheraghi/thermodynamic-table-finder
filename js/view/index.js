@@ -13,6 +13,7 @@ const UI = {
     inputValidation();
     this.control();
     document.querySelector("#clear-input").addEventListener("click", () => this.clear());
+    document.querySelector("#substance").addEventListener("change", () => this.clear());
   },
   control() {
     const form = document.querySelector("form");
@@ -29,7 +30,7 @@ const UI = {
   clear() {
     // only clears UI doesn't clears console
     document.querySelector("pre").textContent = "#hello world";
-    document.querySelectorAll("input").forEach((input) => {
+    document.querySelectorAll("input[type='number']").forEach((input) => {
       input.value = "";
       input.disabled = false;
       input.required = true;

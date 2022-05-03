@@ -131,7 +131,7 @@ export default function (tables, inputValues, phase) {
       const hIndex = propertyIndex(table, "h_sat.vapor");
       const sIndex = propertyIndex(table, "s_sat.vapor");
       const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.temperature);
-      console.log(`searching table b1${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
+      console.log(`searching table ${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
       }
