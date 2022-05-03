@@ -1,3 +1,8 @@
+/**
+ *
+ * @param {Object.<string, ?number>} inputValues an object containing all property inputs
+ * @returns {[number|string]} an array with all available values and their name
+ */
 export default function (inputValues) {
   const output = [];
   if (inputValues.temperature) {

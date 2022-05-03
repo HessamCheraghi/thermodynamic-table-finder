@@ -5,6 +5,12 @@ import doubleInterpolator from "../doubleInterpolator.js";
 import inputReader from "../inputReader.js";
 import ancillary from "./ancillary.js";
 import fallback from "../fallback/index.js";
+/**
+ *
+ * @param {object} tables all thermodynamic tables
+ * @param {Object.<string, ?number>} inputValues an object containing all property values
+ * @returns {Object.<string, ?number>}  an object containing all calculated values
+ */
 export default function (tables, inputValues) {
   const substance = inputValues.substance;
   const propsToStart = inputReader(inputValues);

@@ -5,7 +5,7 @@ import interpolator from "../../interpolator.js";
  *
  * @param {number[][]} tables all thermodynamic tables
  * @param {Object.<string, ?number>} inputValues
- * @returns {Object.<string, ?number>} outputValues
+ * @returns {Object.<string, ?number>}  an object containing all calculated values
  */
 export default function (tables, inputValues) {
   console.log("");

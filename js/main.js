@@ -4,13 +4,13 @@ UI.start();
 
 const result = {
   substance: 1,
-  temperature: 175,
-  pressure: 75,
+  temperature: 102,
+  pressure: null,
   specificVolume: null,
   internalEnergy: null,
   specificEnthalpy: null,
   specificEntropy: null,
-  quality: null,
+  quality: 0,
 };
 
 controller(result);
