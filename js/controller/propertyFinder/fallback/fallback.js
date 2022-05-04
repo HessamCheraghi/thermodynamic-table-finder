@@ -56,15 +56,15 @@ export default function (tables, inputValues, phase) {
       const uIndex = propertyIndex(table, "u_sat.liquid");
       const hIndex = propertyIndex(table, "h_sat.liquid");
       const sIndex = propertyIndex(table, "s_sat.liquid");
-      const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.temperature);
-      UI.log(`searching table b1${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
+      const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.pressure);
+      UI.log(`searching table ${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
       }
       if (tempResult.statusCode === "200") {
         const res = tempResult.result;
         UI.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
-        outputValues.pressure = inputValues.pressure ?? res[pressIndex];
+        outputValues.temperature = inputValues.temperature ?? res[tempIndex];
         outputValues.specificVolume = inputValues.specificVolume ?? res[vIndex];
         outputValues.internalEnergy = inputValues.internalEnergy ?? res[uIndex];
         outputValues.specificEnthalpy = inputValues.specificEnthalpy ?? res[hIndex];
@@ -131,7 +131,7 @@ export default function (tables, inputValues, phase) {
       const uIndex = propertyIndex(table, "u_sat.vapor");
       const hIndex = propertyIndex(table, "h_sat.vapor");
       const sIndex = propertyIndex(table, "s_sat.vapor");
-      const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.temperature);
+      const tempResult = smartSearch(table, inputValues.substance === 1 ? 0 : "press.", inputValues.pressure);
       UI.log(`searching table ${inputValues.substance === 1 ? "b12" : `b${inputValues.substance}1`}`);
       if (tempResult.statusCode === "101" || tempResult.statusCode === "102") {
         throw new Error("cannot find saturation properties try searching manually");
@@ -139,7 +139,7 @@ export default function (tables, inputValues, phase) {
       if (tempResult.statusCode === "200") {
         const res = tempResult.result;
         UI.log(`found exact row =>\n [${res[tempIndex]}, ${res[pressIndex]}, ${res[vIndex]}, ${res[uIndex]}, ${res[hIndex]}, ${res[sIndex]}]`);
-        outputValues.pressure = inputValues.pressure ?? tempResult.result[pressIndex];
+        outputValues.temperature = inputValues.temperature ?? tempResult.result[tempIndex];
         outputValues.specificVolume = inputValues.specificVolume ?? tempResult.result[vIndex];
         outputValues.internalEnergy = inputValues.internalEnergy ?? tempResult.result[uIndex];
         outputValues.specificEnthalpy = inputValues.specificEnthalpy ?? tempResult.result[hIndex];
